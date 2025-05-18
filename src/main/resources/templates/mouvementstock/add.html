@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${pageTitle} ?: 'Ajouter un Mouvement de Stock'">Ajouter un Mouvement de Stock</title>
+</head>
+<section layout:fragment="content">
+    <div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-5 align-self-center">
+                <h4 class="page-title" th:text="${mouvement.id} != null ? 'Modifier le Mouvement' : 'Ajouter un Mouvement'">Mouvement</h4>
+            </div>
+            <div class="col-7 align-self-center">
+                <div class="d-flex align-items-center justify-content-end">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/dashboard}">Accueil</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/mouvements}">Mouvements</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"
+                                th:text="${mouvement.id} != null ? 'Modifier' : 'Ajouter'">Action</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Formulaire dynamique : ajout ou modification -->
+                        <form th:action="${mouvement.id != null} ? @{/mouvements/{id}(id=${mouvement.id})} : @{/mouvements}"
+                              th:object="${mouvement}" method="post">
+                            <!-- Produit -->
+                            <div class="form-group">
+                                <label for="produit">Produit *</label>
+                                <select class="form-control" id="produit" th:field="*{produit}" required>
+                                    <option value="" disabled th:selected="*{produit} == null">-- Sélectionner --</option>
+                                    <option th:each="produit : ${produits}"
+                                            th:value="${produit.id}"
+                                            th:text="${produit.nom}">
+                                    </option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('produit')}" th:errors="*{produit}" class="text-danger"></div>
+                            </div>
+
+                            <!-- Type de mouvement -->
+                            <div class="form-group">
+                                <label for="typeMouvement">Type de Mouvement *</label>
+                                <select class="form-control" id="typeMouvement" th:field="*{typeMouvement}" required>
+                                    <option value="ENTREE">Entrée</option>
+                                    <option value="SORTIE">Sortie</option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('typeMouvement')}" th:errors="*{typeMouvement}" class="text-danger"></div>
+                            </div>
+
+                            <!-- Quantité -->
+                            <div class="form-group">
+                                <label for="quantite">Quantité *</label>
+                                <input type="number" class="form-control" id="quantite" th:field="*{quantite}" min="1" required/>
+                                <div th:if="${#fields.hasErrors('quantite')}" th:errors="*{quantite}" class="text-danger"></div>
+                            </div>
+
+                            <!-- Commentaire -->
+                            <div class="form-group">
+                                <label for="commentaire">Commentaire</label>
+                                <textarea class="form-control" id="commentaire" th:field="*{commentaire}"></textarea>
+                            </div>
+
+                            <!-- Boutons -->
+                            <button type="submit" class="btn btn-primary"
+                                    th:text="${mouvement.id != null} ? 'Mettre à jour' : 'Enregistrer'">Enregistrer</button>
+                            <a th:href="@{/mouvements}" class="btn btn-secondary">Annuler</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</html>

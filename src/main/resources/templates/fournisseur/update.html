@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title th:text="${pageTitle} ?: 'Modifier un Fournisseur'">Modifier un Fournisseur</title>
+</head>
+<section layout:fragment="content">
+    <div class="container mt-5">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/dashboard}">Accueil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" th:href="@{/fournisseurs}">Fournisseurs</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <h2 th:text="${pageTitle} ?: 'Modifier un Fournisseur'">Modifier un Fournisseur</h2>
+
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            <span th:text="${message}">Fournisseur modifié avec succès !</span>
+        </div>
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${message}">Une erreur s'est produite lors de la modification.</span>
+        </div>
+
+        <form th:object="${fournisseur}" th:action="@{'/fournisseurs/' + ${fournisseur.id}}" method="post">
+            <div class="card">
+                <div class="card-header">Détails du Fournisseur</div>
+                <div class="card-body">
+                    <input type="hidden" th:field="*{id}"/>
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nom *</label>
+                        <input type="text" class="form-control" id="nom" th:field="*{nom}" required />
+                        <div th:errors="*{nom}" class="text-danger"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="adresse" class="form-label">Adresse</label>
+                        <textarea class="form-control" id="adresse" th:field="*{adresse}"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contact" class="form-label">Contact</label>
+                        <input type="text" class="form-control" id="contact" th:field="*{contact}" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" th:field="*{email}" />
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                    <a th:href="@{/fournisseurs}" class="btn btn-secondary">Annuler</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</html>

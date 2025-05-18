@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+    <title th:text="${pageTitle}">Ajouter une Catégorie</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container mt-5">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Accueil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" th:href="@{/categories}">Catégories</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <h2 th:text="${pageTitle}">Ajouter une Catégorie</h2>
+
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            <span th:text="${message}">Catégorie enregistrée avec succès !</span>
+        </div>
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${message}">Une erreur s'est produite lors de l'enregistrement.</span>
+        </div>
+
+        <form th:object="${categorie}" th:action="@{/categories}" method="post">
+            <div class="card">
+                <div class="card-header">Détails de la Catégorie</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nom *</label>
+                        <input type="text" class="form-control" id="nom" th:field="*{nom}" required />
+                        <div th:errors="*{nom}" class="text-danger"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" th:field="*{description}"></textarea>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <a th:href="@{/categories}" class="btn btn-secondary">Annuler</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

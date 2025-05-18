@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${pageTitle} ?: 'Liste des Produits'">Liste des Produits</title>
+</head>
+<section layout:fragment="content">
+    <div th:with="useDataTables=${true}" class="page-breadcrumb">
+        <div class="row">
+            <div class="col-5 align-self-center">
+                <h4 class="page-title">Produits</h4>
+            </div>
+            <div class="col-7 align-self-center">
+                <div class="d-flex align-items-center justify-content-end">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/dashboard}">Accueil</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Produits</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Liste des Produits</h4>
+                        <a th:href="@{/produits/new}" class="btn btn-primary mb-3">Ajouter un Produit</a>
+                        <div class="table-responsive">
+                            <table id="file_export" class="table table-striped table-bordered display">
+                                <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Description</th>
+                                    <th>Prix Unitaire (MAD)</th>
+                                    <th>Quantité en Stock</th>
+                                    <th>Catégorie</th>
+                                    <th>Fournisseur</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="produit : ${produits}">
+                                    <td th:text="${produit.nom}">Nom</td>
+                                    <td th:text="${produit.description} ?: '-'">-</td>
+                                    <td th:text="${produit.prixUnitaire}">0</td>
+                                    <td th:text="${produit.quantiteStock}">0</td>
+                                    <td th:text="${produit.categorie?.nom} ?: '-'">-</td>
+                                    <td th:text="${produit.fournisseur?.nom} ?: '-'">-</td>
+                                    <td>
+
+                                        <a th:href="@{/produits/edit/{id}(id=${produit.id})}" class="btn btn-sm btn-info">Modifier</a>
+                                        <form th:action="@{/produit/delete/{id}(id=${produit.id})}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce produit ?');">Supprimer</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(produits)}">
+                                    <td colspan="7" class="text-center">Aucun produit trouvé</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</html>

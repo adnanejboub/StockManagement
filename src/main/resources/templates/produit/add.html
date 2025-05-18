@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+    <title th:text="${pageTitle} ?: 'Ajouter un Produit'">Ajouter un Produit</title>
+</head>
+<section layout:fragment="content">
+    <div class="container mt-5">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/dashboard}">Accueil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" th:href="@{/produits}">Produits</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <h2 th:text="${pageTitle} ?: 'Ajouter un Produit'">Ajouter un Produit</h2>
+
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            <span th:text="${message}">Produit enregistré avec succès !</span>
+        </div>
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${message}">Une erreur s'est produite lors de l'enregistrement.</span>
+        </div>
+
+        <form th:object="${produit}" th:action="@{/produits}" method="post">
+            <div class="card">
+                <div class="card-header">Détails du Produit</div>
+                <div class="card-body">
+                    <input type="hidden" th:field="*{id}" />
+
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nom *</label>
+                        <input type="text" class="form-control" id="nom" th:field="*{nom}" required />
+                        <div th:errors="*{nom}" class="text-danger"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" th:field="*{description}" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="prixUnitaire" class="form-label">Prix Unitaire (€) *</label>
+                        <input type="number" step="0.01" class="form-control" id="prixUnitaire" th:field="*{prixUnitaire}" required />
+                        <div th:errors="*{prixUnitaire}" class="text-danger"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="quantiteStock" class="form-label">Quantité en Stock *</label>
+                        <input type="number" min="0" class="form-control" id="quantiteStock" th:field="*{quantiteStock}" required />
+                        <div th:errors="*{quantiteStock}" class="text-danger"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="categorie" class="form-label">Catégorie</label>
+                        <select class="form-control" id="categorie" th:field="*{categorie}">
+                            <option value="">-- Sélectionner une catégorie --</option>
+                            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.nom}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fournisseur" class="form-label">Fournisseur</label>
+                        <select class="form-control" id="fournisseur" th:field="*{fournisseur}">
+                            <option value="">-- Sélectionner un fournisseur --</option>
+                            <option th:each="fourn : ${fournisseurs}" th:value="${fourn.id}" th:text="${fourn.nom}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <a th:href="@{/produits}" class="btn btn-secondary">Annuler</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</html>

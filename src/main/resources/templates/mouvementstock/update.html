@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <title th:text="${pageTitle} ?: 'Modifier un Mouvement de Stock'">Modifier un Mouvement</title>
+</head>
+
+<section layout:fragment="content">
+    <div class="container mt-5">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/dashboard}">Accueil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" th:href="@{/mouvements}">Mouvements de Stock</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <h2 th:text="${pageTitle} ?: 'Modifier un Mouvement de Stock'">Modifier un Mouvement de Stock</h2>
+
+        <form th:object="${mouvement}" th:action="@{'/mouvements/' + ${mouvement.id}}" method="post">
+            <div class="card">
+                <div class="card-header">Détails du Mouvement</div>
+                <div class="card-body">
+                    <input type="hidden" th:field="*{id}" />
+
+                    <div class="mb-3">
+                        <label for="produit" class="form-label">Produit *</label>
+                        <select class="form-select" id="produit" th:field="*{produit}" required>
+                            <option th:each="produit : ${produits}"
+                                    th:value="${produit.id}"
+                                    th:text="${produit.nom}"
+                                    th:selected="${produit.id} == ${mouvement.produit.id}">
+                            </option>
+                        </select>
+                        <div th:errors="*{produit}" class="text-danger"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="typeMouvement" class="form-label">Type de Mouvement *</label>
+                        <select class="form-select" id="typeMouvement" th:field="*{typeMouvement}" required>
+                            <option value="ENTREE">Entrée</option>
+                            <option value="SORTIE">Sortie</option>
+                        </select>
+                        <div th:errors="*{typeMouvement}" class="text-danger"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="quantite" class="form-label">Quantité *</label>
+                        <input type="number" class="form-control" id="quantite" th:field="*{quantite}" required />
+                        <div th:errors="*{quantite}" class="text-danger"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="commentaire" class="form-label">Commentaire</label>
+                        <textarea class="form-control" id="commentaire" th:field="*{commentaire}"></textarea>
+                        <div th:errors="*{commentaire}" class="text-danger"></div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                    <a th:href="@{/mouvements}" class="btn btn-secondary">Annuler</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title th:text="${pageTitle} ?: 'Liste des Catégories'">Liste des Catégories</title>
+</head>
+<section layout:fragment="content">
+  <div th:with="useDataTables=${true}" class="page-breadcrumb">
+    <div class="row">
+      <div class="col-5 align-self-center">
+        <h4 class="page-title">Catégories</h4>
+      </div>
+      <div class="col-7 align-self-center">
+        <div class="d-flex align-items-center justify-content-end">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a th:href="@{/dashboard}">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">Catégories</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Liste des Catégories</h4>
+            <a th:href="@{/categories/new}" class="btn btn-primary mb-3">Ajouter une Catégorie</a>
+            <div class="table-responsive">
+              <table id="file_export" class="table table-striped table-bordered display">
+                <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="categorie : ${categories}">
+                  <td th:text="${categorie.nom}">Nom</td>
+                  <td th:text="${categorie.description} ?: '-'">-</td>
+                  <td>
+                    <a th:href="@{/categories/edit/{id}(id=${categorie.id})}" class="btn btn-sm btn-info">Modifier</a>
+                    <form th:action="@{/categories/delete/{id}(id=${categorie.id})}" method="post" style="display:inline;">
+                      <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Voulez-vous vraiment supprimer cette catégorie ?');">Supprimer</button>
+                    </form>
+                  </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(categories)}">
+                  <td colspan="3" class="text-center">Aucune catégorie trouvée</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</html>
