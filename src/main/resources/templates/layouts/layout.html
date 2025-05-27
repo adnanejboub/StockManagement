@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -45,9 +45,9 @@
                             <img th:src="@{/assets/images/logo-light-icon.png}" alt="homepage" class="light-logo"/>
                         </b>
                         <span class="logo-text">
-                                <img th:src="@{/assets/images/logo-text.png}" alt="homepage" class="dark-logo"/>
-                                <img th:src="@{/assets/images/logo-light-text.png}" class="light-logo" alt="homepage"/>
-                            </span>
+                            <img th:src="@{/assets/images/logo-text.png}" alt="homepage" class="dark-logo"/>
+                            <img th:src="@{/assets/images/logo-light-text.png}" class="light-logo" alt="homepage"/>
+                        </span>
                     </a>
                     <a class="sidebartoggler d-none d-md-block" href="javascript:void(0)" data-sidebartype="mini-sidebar">
                         <i class="mdi mdi-toggle-switch mdi-toggle-switch-off font-20"></i>
@@ -81,26 +81,21 @@
                     <!-- User Profile -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="m-l-5 font-medium d-none d-sm-inline-block" th:text="${user.name} ?: 'User'"><i class="mdi mdi-chevron-down"></i></span>
+                            <span class="m-l-5 font-medium d-none d-sm-inline-block" sec:authentication="name">User</span>
+                            <i class="mdi mdi-chevron-down"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                                <span class="with-arrow">
-                                    <span class="bg-primary"></span>
-                                </span>
+                            <span class="with-arrow">
+                                <span class="bg-primary"></span>
+                            </span>
                             <div class="d-flex no-block align-items-center p-15 bg-primary text-white m-b-10">
-                                <div>
-
-                                </div>
+                                <div></div>
                                 <div class="m-l-10">
-                                    <h4 class="m-b-0" th:text="${user.name} ?: 'User'">User</h4>
-                                    <p class="m-b-0" th:text="${user.email} ?: 'user@example.com'">user@example.com</p>
+                                    <h4 class="m-b-0" sec:authentication="name">User</h4>
+                                    <p class="m-b-0" th:text="${user?.email} ?: 'admin@stock.com'">admin@stock.com</p>
                                 </div>
                             </div>
                             <div class="profile-dis scrollable">
-                                <a class="dropdown-item" th:href="@{/profile}">
-                                    <i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
-                                <a class="dropdown-item" th:href="@{/settings}">
-                                    <i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
                                 <a class="dropdown-item" th:href="@{/logout}">
                                     <i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
                             </div>
